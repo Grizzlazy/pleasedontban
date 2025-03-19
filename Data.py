@@ -6,7 +6,7 @@ import heapq
 import time
 import itertools
 import collections
-
+import os
 number_of_trucks = 1
 number_of_cities = 0
 number_of_drones = 1
@@ -25,9 +25,9 @@ DIFFERENTIAL_RATE_RELEASE_TIME = 1
 A_ratio = 1
 B_ratio = 0.7
 C_ratio = 0.1
-delta = 0.6
-alpha = [0.3, 0.2, 0.1]
-theta = 2
+delta = 0.3
+alpha = [0.5, 0.3, 0.1]
+theta = 0.5
 
 
 def read_data(path):
