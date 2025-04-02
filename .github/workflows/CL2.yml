@@ -6,14 +6,15 @@ permissions:
   contents: read
 
 jobs:
-  continue1:
-    name: Run test with multiple configurations
+  cities10:
+    name: Run test with 10 cities
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        number_of_cities: [20]
-        segment: [8]
-        iteration: [1, 2, 3, 4, 5, 6, 7, 8, 9 , 10]
+        number_of_cities: [10]
+        segment: [10]
+        iteration: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        theta: [0.5, 1, 2]
         data_set: ["C101_0.5.dat", "C101_2.dat", "C101_3.dat", "C201_0.5.dat", "C201_2.dat", "C201_3.dat", "R101_0.5.dat", "R101_2.dat", "R101_3.dat", "RC101_0.5.dat", "RC101_2.dat", "RC101_3.dat"]
     steps:
       - name: Checkout repository
@@ -34,15 +35,88 @@ jobs:
           DATA_SET: ${{ matrix.data_set }}
           SEGMENT: ${{ matrix.segment }}
           ITERATION: ${{ matrix.iteration }}
+          THETA: ${{ matrix.theta }}
       - name: Upload result Excel file as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: json1-results-${{ matrix.number_of_cities }}-${{ matrix.data_set }}-${{ matrix.segment }}-iter-${{ matrix.iteration }}
+          name: json1-results-${{ matrix.number_of_cities }}-${{ matrix.data_set }}-${{ matrix.segment }}-${{ matrix.theta }}-iter-${{ matrix.iteration }}
+          path: Random_*_CL2.xlsx
+  
+  cities15:
+    name: Run test with 15 cities
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        number_of_cities: [15]
+        segment: [10]
+        iteration: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        theta: [0.5, 1, 2]
+        data_set: ["C101_0.5.dat", "C101_2.dat", "C101_3.dat", "C201_0.5.dat", "C201_2.dat", "C201_3.dat", "R101_0.5.dat", "R101_2.dat", "R101_3.dat", "RC101_0.5.dat", "RC101_2.dat", "RC101_3.dat"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+        
+      - name: Run main.py ITE-3 for each iteration
+        run: python test_similarity.py
+        env:
+          NUMBER_OF_CITIES: ${{ matrix.number_of_cities }}
+          DATA_SET: ${{ matrix.data_set }}
+          SEGMENT: ${{ matrix.segment }}
+          ITERATION: ${{ matrix.iteration }}
+          THETA: ${{ matrix.theta }}
+      - name: Upload result Excel file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: json1-results-${{ matrix.number_of_cities }}-${{ matrix.data_set }}-${{ matrix.segment }}-${{ matrix.theta }}-iter-${{ matrix.iteration }}
+          path: Random_*_CL2.xlsx
+  
+  cities20:
+    name: Run test with 20 cities
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        number_of_cities: [20]
+        segment: [10]
+        iteration: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        theta: [0.5, 1, 2]
+        data_set: ["C101_0.5.dat", "C101_2.dat", "C101_3.dat", "C201_0.5.dat", "C201_2.dat", "C201_3.dat", "R101_0.5.dat", "R101_2.dat", "R101_3.dat", "RC101_0.5.dat", "RC101_2.dat", "RC101_3.dat"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+        
+      - name: Run main.py ITE-3 for each iteration
+        run: python test_similarity.py
+        env:
+          NUMBER_OF_CITIES: ${{ matrix.number_of_cities }}
+          DATA_SET: ${{ matrix.data_set }}
+          SEGMENT: ${{ matrix.segment }}
+          ITERATION: ${{ matrix.iteration }}
+          THETA: ${{ matrix.theta }}
+      - name: Upload result Excel file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: json1-results-${{ matrix.number_of_cities }}-${{ matrix.data_set }}-${{ matrix.segment }}-${{ matrix.theta }}-iter-${{ matrix.iteration }}
           path: Random_*_CL2.xlsx
   
   summary:
     name: Summary results
-    needs: continue1
+    needs: [cities10, cities15, cities20]
     runs-on: ubuntu-latest
 
     steps:
