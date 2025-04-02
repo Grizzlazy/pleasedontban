@@ -509,5 +509,5 @@ for txt_file in txt_files:
                 sheet.cell(row=row, column=column+1, value=str(best_csv_sol))
             sheet.cell(row=row, column=column+2, value=data_to_write["Best_T"])
             sheet.cell(row=row, column=column+3, value=data_to_write["END"])
-            workbook.save(f"Random_{number_of_cities}_{data_set}_{SEGMENT}_{theta}_{delta}_iter-_{ite}_CL2.xlsx")
+            workbook.save(f"Random_{number_of_cities}_{data_set}_{SEGMENT}_{theta}_{delta}_{alpha}_iter-_{ite}_CL2.xlsx")
             workbook.close()

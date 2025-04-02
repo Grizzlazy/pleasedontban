@@ -27,7 +27,7 @@ B_ratio = 0.7
 C_ratio = 0.1
 delta = 0.3
 alpha = [0.5, 0.3, 0.1]
-theta = int(os.getenv('THETA'))
+theta = float(os.getenv('THETA'))
 
 
 def read_data(path):
